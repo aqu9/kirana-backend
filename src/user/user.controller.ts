@@ -14,4 +14,9 @@ export class UserController {
   async addUser(@Body() body) {
     return await this.userService.addUser(body);
   }
+
+  @Get('all')
+  async getAllUser() {
+    return await this.userService.getAllUser();
+  }
 }
