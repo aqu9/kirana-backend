@@ -14,7 +14,7 @@ export class LoginService {
   }
 
   async login (body: LoginDTO, byPassWord: boolean = false){
-    let user = await this.userModel.findOne({ "$or": [ { email: body.userId }, { phone: body.userId} ] })
+    let user = await this.userModel.findOne({ "$or": [ { email: body.userId }, { phone: body.userId},{ alias: body.userId} ] })
     if(!user){
       throw new NotFoundException('User User not found')
     }
