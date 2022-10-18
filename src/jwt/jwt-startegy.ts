@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 // import { User } from 'protegeDatabaseManager';
-import {User, UserDocument } from 'database_manager';
+import {User, UserDocument } from 'database_Manager';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { config } from 'dotenv';
