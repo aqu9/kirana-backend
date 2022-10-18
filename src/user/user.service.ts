@@ -12,8 +12,10 @@ export class UserService {
   }
 
   async addUser (body){
+    console.log(body,'---------')
     const user = new this.userModel(body)
-    user.save()
+    const checkEmail=await this.userModel.findOne({email:body.email})
+    // user.save()
     return user
   }
 
