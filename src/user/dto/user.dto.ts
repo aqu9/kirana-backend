@@ -29,5 +29,6 @@ export class UserDto{
 
     @IsNotEmpty()
     @IsString()
+    @Length(5,10)
     alias: string;
 }

@@ -1,4 +1,4 @@
-import { Controller, Get,Post,Body } from '@nestjs/common';
+import { Controller, Get,Post,Body,Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto';
 
@@ -17,7 +17,8 @@ export class UserController {
   }
 
   @Get('all')
-  async getAllUser() {
-    return await this.userService.getAllUser();
+  async getAllUser(@Query() query) {
+    return await this.userService.getAllUser(query);
   }
+
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { UserDocument } from 'database_Manager';
 import { InjectModel } from '@nestjs/mongoose';
@@ -12,14 +12,36 @@ export class UserService {
   }
 
   async addUser (body){
-    console.log(body,'---------')
+    let checkEmail = await this.userModel.findOne({ "$or": [ { email: body.email }, { phone: body.phone},{ alias: body.alias} ] })
+    if(checkEmail){
+      throw new ForbiddenException('email or phone or alias already in use');
+    }
     const user = new this.userModel(body)
-    const checkEmail=await this.userModel.findOne({email:body.email})
-    // user.save()
+    user.save()
     return user
   }
 
-  async getAllUser(){
-    return await this.userModel.find()
+  async getAllUser(query){
+    if(Object.keys(query).length===0)
+    return await this.userModel.find().limit(5)
+
+    const queryParam =[];
+    if(query.email){
+      queryParam.push({email:query.email})
+    }
+
+    if(query.name){
+      queryParam.push({name:{"$regex":query.name,"$options":"i"}})
+    }
+
+    if(query.phone){
+      queryParam.push({phone:query.phone})
+    }
+
+    const user=await this.userModel.find({"$and": queryParam})
+    if(user.length===0){
+      throw new NotFoundException('Data Not Found');
+    }
+    return user;
   }
 }
