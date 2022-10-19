@@ -2,6 +2,7 @@ import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/commo
 import { Model } from 'mongoose';
 import { UserDocument } from 'database_Manager';
 import { InjectModel } from '@nestjs/mongoose';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class UserService {
@@ -43,5 +44,16 @@ export class UserService {
       throw new NotFoundException('Data Not Found');
     }
     return user;
+  }
+
+  async getuserById(id:string){
+    if(!Types.ObjectId.isValid(id)){
+      throw new NotFoundException('user not found');
+    }
+    let checkUserById = await this.userModel.findById(id)
+    if(!checkUserById){
+      throw new NotFoundException('user not found');
+    }
+    return checkUserById
   }
 }
