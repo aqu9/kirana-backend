@@ -26,7 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 		let existingUser: User;
 
 		try {
-            existingUser = await this.userModal.findOne({ "$or": [ { email: userId }, { phone: userId} ] })
+            existingUser = await this.userModal.findOne({ "$or": [ { email: userId }, { phone: userId},{alias:userId} ] })
 			// existingUser = await userModal.findOne({
 			// 	where: {
 			// 		[Op.or]: [{ phone: userId }, { alias: userId }, { email: userId }],

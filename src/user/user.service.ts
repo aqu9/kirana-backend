@@ -22,6 +22,7 @@ export class UserService {
   }
 
   async getAllUser(query){
+    console.log("aa gya yha pr")
     if(Object.keys(query).length===0)
     return await this.userModel.find().limit(5)
 
