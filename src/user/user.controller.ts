@@ -1,4 +1,4 @@
-import { Controller, Get,Post,Body,Query, UseGuards } from '@nestjs/common';
+import { Controller, Get,Post,Body,Query, UseGuards, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
@@ -21,6 +21,12 @@ export class UserController {
   @Get('all')
   async getAllUser(@Query() query) {
     return await this.userService.getAllUser(query);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':id')
+  async getuserById(@Param('id') id) {
+    return await this.userService.getuserById(id);
   }
 
 }
