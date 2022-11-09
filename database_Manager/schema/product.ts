@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { categories,typeOfQuantity } from 'database_Manager/category.config';
 
 export type ProductDocument = Product & Document;
 
@@ -20,7 +21,7 @@ export class Product {
   @Prop()
   logo_link: string;
 
-  @Prop({enum:['Kg','Litre','Packets']})
+  @Prop({enum:typeOfQuantity})
   type_of_quantity:string;
 
   @Prop() 
@@ -39,7 +40,7 @@ export class Product {
   is_veg: boolean;
 
 
-  @Prop({ enum:['grocerry','dairy','toiletries','others','soft drinks','instant food','cooking essential']})
+  @Prop({ enum:categories})
   category:  string;
 
   @Prop()
