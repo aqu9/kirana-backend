@@ -2,6 +2,7 @@ import { Controller, Get,Post,Body,Query, UseGuards } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
+import { categories } from 'database_Manager';
 
 @Controller('product')
 export class ProductController {
@@ -21,6 +22,11 @@ export class ProductController {
    @Get('all')
    async getAlProduct(@Query() query) {
      return await this.productService.getAllProduct(query);
+   }
+
+   @Get('category')
+   async getProductCategory() {
+     return categories;
    }
 
 }

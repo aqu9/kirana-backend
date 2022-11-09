@@ -1,5 +1,5 @@
 import { IsNumber,IsEnum, IsNotEmpty, IsString, IsBoolean ,IsArray} from "class-validator";
-
+import { categories,typeOfQuantity } from "database_Manager";
 export class ProductDto{
 
     @IsNotEmpty()
@@ -23,7 +23,7 @@ export class ProductDto{
     
     @IsNotEmpty()
     @IsString()
-    @IsEnum(['Kg','Litre','Packets'])
+    @IsEnum(typeOfQuantity)
     type_of_quantity: string;
 
     @IsString()
@@ -35,10 +35,14 @@ export class ProductDto{
     @IsNotEmpty()
     @IsBoolean()
     is_visible: boolean;
-
+    
+    @IsNotEmpty()
+    @IsBoolean()
+    is_veg: boolean;
+    
     @IsNotEmpty()
     @IsString()
-    @IsEnum(['grocerry','dairy','toiletries','others'])
+    @IsEnum(categories)
     category: string;
 
     @IsNotEmpty()
