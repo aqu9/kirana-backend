@@ -23,11 +23,15 @@ export class ProductService {
 
     const queryParam =[];
 
-    if(query.name){
-      queryParam.push({name:{"$regex":query.name,"$options":"i"}})
+   //f(query.name){
+   // queryParam.push({name:{"$regex":query.name,"$options":"i"}})
+   //
+
+    console.log(query);
+    if(query.category){
+    	queryParam.push({category:query.category})
     }
-
-
+    console.log(queryParam);
     const product=await this.productModel.find({"$and": queryParam})
     if(product.length===0){
       throw new NotFoundException('Data Not Found');

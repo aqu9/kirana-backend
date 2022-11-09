@@ -34,8 +34,12 @@ export class Product {
 
   @Prop()
   is_visible : boolean;
+  
+  @Prop()
+  is_veg: boolean;
 
-  @Prop({ enum:['grocerry','dairy','toiletries','others']})
+
+  @Prop({ enum:['grocerry','dairy','toiletries','others','soft drinks','instant food','cooking essential']})
   category:  string;
 
   @Prop()

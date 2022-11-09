@@ -35,10 +35,14 @@ export class ProductDto{
     @IsNotEmpty()
     @IsBoolean()
     is_visible: boolean;
-
+    
+    @IsNotEmpty()
+    @IsBoolean()
+    is_veg: boolean;
+    
     @IsNotEmpty()
     @IsString()
-    @IsEnum(['grocerry','dairy','toiletries','others'])
+    @IsEnum(['grocerry','dairy','toiletries','others','soft drinks','instant food','cooking essential'])
     category: string;
 
     @IsNotEmpty()
