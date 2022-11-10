@@ -3,7 +3,10 @@ import { ProductService } from './product.service';
 import { ProductDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
 import { categories } from 'database_Manager';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags, } from '@nestjs/swagger';
 
+
+@ApiTags('Product Module')
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}

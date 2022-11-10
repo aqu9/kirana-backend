@@ -2,7 +2,9 @@ import { Controller, Get,Post,Body,Query, UseGuards, Param } from '@nestjs/commo
 import { UserService } from './user.service';
 import { UserDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags, } from '@nestjs/swagger';
 
+@ApiTags('User Module')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
