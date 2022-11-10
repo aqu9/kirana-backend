@@ -47,6 +47,11 @@ export class UserController {
                   type: 'string',
                   example: 'Enter your address',
               },
+
+              password: {
+                  type: 'string',
+                  example: 'Enter your password',
+              },
               alias: {
                   type: 'string',
                   example: 'Enter your alias',
