@@ -8,7 +8,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true
   }))
-  const config = new DocumentBuilder()
+  const config = new DocumentBuilder().addBearerAuth()
     .setTitle('Kirana')
     .setDescription('Kirana is the app used for groceries product')
     .setVersion('1.0')
