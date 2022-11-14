@@ -2,7 +2,7 @@ import { Controller, Get,Post,Body,Query, UseGuards } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
-import { categories } from 'database_Manager';
+import { categories, categoriesForFE } from 'database_Manager';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags,ApiBearerAuth,ApiQuery } from '@nestjs/swagger';
 import { categories as categoriesTypes,typeOfQuantity } from 'database_Manager/category.config';
 
@@ -225,7 +225,7 @@ export class ProductController {
 
   @Get('category')
   async getProductCategory() {
-    return categories;
+    return categoriesForFE;
   }
 }
                             
