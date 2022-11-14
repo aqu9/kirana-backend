@@ -8,6 +8,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true
   }))
+  app.setGlobalPrefix('api');
   const config = new DocumentBuilder().addBearerAuth()
     .setTitle('Kirana')
     .setDescription('Kirana is the app used for groceries product')
@@ -16,7 +17,7 @@ async function bootstrap() {
     .build();
   
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('apiSwagger', app, document);
 
   const port = process.env.PORT || 4000
   await app.listen(port , function(){
