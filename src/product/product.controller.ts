@@ -227,5 +227,11 @@ export class ProductController {
   async getProductCategory() {
     return categoriesForFE;
   }
+
+  @Post('category')
+  async AddCategory(@Body() body:any) {
+    console.log()
+    return this.productService.addCategories(body);
+  }
 }
                             

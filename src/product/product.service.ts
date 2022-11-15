@@ -1,11 +1,11 @@
 import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { ProductDocument } from 'database_Manager';
+import { ProductDocument,CategoryDocumnt } from 'database_Manager';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class ProductService {
-    constructor(@InjectModel('product') private readonly productModel: Model<ProductDocument>) {}
+    constructor(@InjectModel('product') private readonly productModel: Model<ProductDocument>, @InjectModel('category') private readonly categoryModel: Model<CategoryDocumnt>) {}
 
   getHello(): string {
     return 'Hello World!';
@@ -36,5 +36,17 @@ export class ProductService {
       throw new NotFoundException('Data Not Found');
     }
     return product;
+   }
+
+   async addCategories(body:any) {
+    console.log(body)
+    try {
+      const categories = new this.categoryModel(body)
+      console.log(categories,"catgories")
+      return categories.save()
+      
+    } catch (error) {
+        console.log(error)
+    }
    }
 }
