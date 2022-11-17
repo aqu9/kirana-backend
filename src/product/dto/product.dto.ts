@@ -1,5 +1,7 @@
-import { IsNumber,IsEnum, IsNotEmpty, IsString, IsBoolean ,IsArray} from "class-validator";
+import { IsNumber,IsEnum, IsNotEmpty, IsString, IsBoolean ,IsArray, IsOptional, IsMongoId, ArrayMinSize, ArrayUnique} from "class-validator";
 import { categories,typeOfQuantity } from "database_Manager";
+import { ObjectId, Schema as mongoSchema } from 'mongoose';
+
 export class ProductDto{
 
     @IsNotEmpty()
@@ -41,12 +43,32 @@ export class ProductDto{
     is_veg: boolean;
     
     @IsNotEmpty()
-    @IsString()
-    @IsEnum(categories)
-    category: string;
+    @IsMongoId({each:true})
+    @ArrayMinSize(1)
+    category: ObjectId[];
 
     @IsNotEmpty()
     @IsArray()
     keywords: string[];
+
+}
+
+export class CategoryDto{
+
+    @IsNotEmpty()
+    @IsString()
+    categoryName: string;
+
+    @IsNotEmpty()
+    @IsString()
+    categoryImageLink:string;
+
+    @IsOptional()
+    @IsMongoId({each: true})
+    @ArrayUnique({each:true})
+    @ArrayMinSize(0)
+    parentCategory?: ObjectId[];
+
+
 
 }

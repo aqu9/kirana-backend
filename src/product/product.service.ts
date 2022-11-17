@@ -1,4 +1,4 @@
-import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { Injectable, ForbiddenException, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { ProductDocument,CategoryDocumnt } from 'database_Manager';
 import { InjectModel } from '@nestjs/mongoose';
@@ -40,13 +40,22 @@ export class ProductService {
 
    async addCategories(body:any) {
     console.log(body)
-    try {
-      const categories = new this.categoryModel(body)
-      console.log(categories,"catgories")
-      return categories.save()
-      
-    } catch (error) {
-        console.log(error)
+    const categories = new this.categoryModel(body)
+    console.log(categories,"catgories")
+    if(!categories)
+    {
+      throw new UnprocessableEntityException("Something Went Wrong, Please try again after some time");
     }
+    const test =await categories.save();
+    console.log(test,"--> yee walaa");
+    return test;
+   }
+
+   async getAllCategories(){
+    return await this.categoryModel.find()
+   }
+
+   async getProductByCategory(id){
+    return "heeelooo";//await this.productModel. find  
    }
 }

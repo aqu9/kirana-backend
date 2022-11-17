@@ -11,8 +11,8 @@ export class Category {
   @Prop()
   categoryImageLink: string;
 
-  @Prop({ type: mongoSchema.Types.ObjectId, ref: 'category', required:false})
-  parentCategory: [this][];
+  @Prop({ type: [mongoSchema.Types.ObjectId], ref: 'Category', required:false})
+  parentCategory: Category[];
 }
 
 export const categorySchema = SchemaFactory.createForClass(Category);

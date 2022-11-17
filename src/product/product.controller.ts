@@ -1,6 +1,6 @@
-import { Controller, Get,Post,Body,Query, UseGuards } from '@nestjs/common';
+import { Controller, Get,Post,Body,Query, UseGuards, Param } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { ProductDto } from './dto';
+import { ProductDto,CategoryDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
 import { categories, categoriesForFE } from 'database_Manager';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags,ApiBearerAuth,ApiQuery } from '@nestjs/swagger';
@@ -17,7 +17,7 @@ export class ProductController {
     return this.productService.getHello();
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  //@UseGuards(AuthGuard('jwt'))
   @Post('addproduct')
   @ApiOperation({ summary: 'create product api' })
   @ApiBearerAuth()
@@ -223,15 +223,30 @@ export class ProductController {
     return await this.productService.getAllProduct(query);
   }
 
+ 
+
   @Get('category')
   async getProductCategory() {
     return categoriesForFE;
   }
 
+  @Get('category/all')
+  async getProductCategories() {
+    return this.productService.getAllCategories();
+  }
+
   @Post('category')
-  async AddCategory(@Body() body:any) {
+  async AddCategory(@Body() body:CategoryDto) {
     console.log()
     return this.productService.addCategories(body);
   }
+  @Get('category/:id')
+  async getProductByCategory(@Param('id') id) {
+    console.log()
+    return this.productService.getProductByCategory(id);
+  }
+
 }
+
+
                             
