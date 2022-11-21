@@ -1,11 +1,11 @@
 import { Injectable, ForbiddenException, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { ProductDocument,CategoryDocumnt } from 'database_Manager';
+import { ProductDocument,CategoryDocumnt, Category } from 'database_Manager';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class ProductService {
-    constructor(@InjectModel('product') private readonly productModel: Model<ProductDocument>, @InjectModel('category') private readonly categoryModel: Model<CategoryDocumnt>) {}
+    constructor(@InjectModel('product') private readonly productModel: Model<ProductDocument>, @InjectModel('Category') private readonly categoryModel: Model<CategoryDocumnt>) {}
 
   getHello(): string {
     return 'Hello World!';
@@ -39,7 +39,7 @@ export class ProductService {
    }
 
    async addCategories(body:any) {
-    console.log(body)
+    // console.log(body)
     const categories = new this.categoryModel(body)
     console.log(categories,"catgories")
     if(!categories)
@@ -56,6 +56,19 @@ export class ProductService {
    }
 
    async getProductByCategory(id){
-    return "heeelooo";//await this.productModel. find  
+    const query = [
+      {
+        $lookup: {
+          from: 'products',
+          localField: "parentCategory",
+          foreignField: "category",
+          as: "Product",
+        },
+        
+      },
+    ]
+    const cateegory = await this.categoryModel.aggregate(query)
+    // const cateegory = await this.productModel.aggregate(query)
+    return cateegory;//await this.productModel. find  
    }
 }
