@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { UserDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
+import { IsMongoIdDto } from '../product/dto';
 
 @ApiTags('User Module')
 @Controller('user')
@@ -208,8 +209,8 @@ export class UserController {
           }
   }
 })
-  async getuserById(@Param('id') id) {
-    return await this.userService.getuserById(id);
+  async getuserById(@Param() id: IsMongoIdDto) {
+    return await this.userService.getuserById(id.id);
   }
 
 }

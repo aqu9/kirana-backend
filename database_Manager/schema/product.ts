@@ -41,8 +41,8 @@ export class Product {
   is_veg: boolean;
 
 
-  @Prop({ type: [mongoSchema.Types.ObjectId], ref: 'Category', required:true})
-  category: Category[];
+  @Prop({ type: mongoSchema.Types.ObjectId, ref: 'Category', required:true})
+  category: Category;
 
   @Prop()
   keywords: string[];

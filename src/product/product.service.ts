@@ -1,7 +1,8 @@
 import { Injectable, ForbiddenException, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { isValidObjectId, Model, Types  } from 'mongoose';
 import { ProductDocument,CategoryDocumnt, Category } from 'database_Manager';
 import { InjectModel } from '@nestjs/mongoose';
+import { kMaxLength } from 'buffer';
 
 @Injectable()
 export class ProductService {
@@ -16,7 +17,7 @@ export class ProductService {
     return createProduct.save();
 
   }
-  
+ 
   async getAllProduct(query) {
     if(Object.keys(query).length===0)
     return await this.productModel.find().limit(5)
@@ -51,24 +52,54 @@ export class ProductService {
     return test;
    }
 
+   async updateCategory(body, id){
+        const updateCats = await this.categoryModel.findByIdAndUpdate({_id:id},{...body},{new : true});
+        return updateCats.save();
+
+  }
+
    async getAllCategories(){
     return await this.categoryModel.find()
    }
 
-   async getProductByCategory(id){
+   async getSubCategoryByCategoryId(id,level){
+    console.log(id,level);
     const query = [
+      
+        {
+          $match: {parentCategory: new Types.ObjectId(id)} 
+          
+        }
+        ,
+      
       {
         $lookup: {
-          from: 'products',
+          from: 'categories',
           localField: "parentCategory",
-          foreignField: "category",
-          as: "Product",
-        },
+          foreignField: "_id",
+          as: "parentCategory",
+        }
         
-      },
+      }
     ]
-    const cateegory = await this.categoryModel.aggregate(query)
-    // const cateegory = await this.productModel.aggregate(query)
-    return cateegory;//await this.productModel. find  
+    const cateegory = await this.categoryModel.aggregate(query);
+    console.log(cateegory);
+    return cateegory;
    }
+
+   async getAllParentCategory()
+   {
+    return await this.categoryModel.find({ parentCategory: { $exists: true,$type: 'array', $eq: [] } });
+   }
+
+   async getProductByCategoryId(id){
+    const query = [ 
+      {
+        $match: {category: new Types.ObjectId(id)} 
+        
+      }
+    ];
+    return await this.productModel.aggregate(query);
+   }
+
 }

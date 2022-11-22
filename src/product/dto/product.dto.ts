@@ -43,9 +43,8 @@ export class ProductDto{
     is_veg: boolean;
     
     @IsNotEmpty()
-    @IsMongoId({each:true})
-    @ArrayMinSize(1)
-    category: ObjectId[];
+    @IsMongoId()
+    category: ObjectId;
 
     @IsNotEmpty()
     @IsArray()
@@ -65,10 +64,30 @@ export class CategoryDto{
 
     @IsOptional()
     @IsMongoId({each: true})
-    @ArrayUnique({each:true})
+   // @ArrayUnique({each:true})
     @ArrayMinSize(0)
     parentCategory?: ObjectId[];
+}
+
+export class CategoryUpdateDto{
+
+    @IsNotEmpty()
+    @IsString()
+    @IsOptional()
+    categoryName: string;
+    
+    @IsNotEmpty()
+    @IsString()
+    @IsOptional()
+    categoryImageLink:string;
+
+}
 
 
+export class IsMongoIdDto{
+ 
+    @IsNotEmpty()
+    @IsMongoId()
+    id:string;
 
 }

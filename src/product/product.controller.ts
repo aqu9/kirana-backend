@@ -1,6 +1,6 @@
-import { Controller, Get,Post,Body,Query, UseGuards, Param } from '@nestjs/common';
+import { Controller, Get,Post,Body,Query, UseGuards, Param ,Put} from '@nestjs/common';
 import { ProductService } from './product.service';
-import { ProductDto,CategoryDto } from './dto';
+import { ProductDto,CategoryDto,CategoryUpdateDto, IsMongoIdDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
 import { categories, categoriesForFE } from 'database_Manager';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags,ApiBearerAuth,ApiQuery } from '@nestjs/swagger';
@@ -227,7 +227,7 @@ export class ProductController {
 
   @Get('category')
   async getProductCategory() {
-    return categoriesForFE;
+    return this.productService.getAllParentCategory();
   }
 
   @Get('category/all')
@@ -240,12 +240,22 @@ export class ProductController {
     console.log()
     return this.productService.addCategories(body);
   }
-  @Get('category/:id')
-  async getProductByCategory(@Param('id') id) {
+
+  @Put('category/:id')
+  async UpdateCategory(@Body() body:CategoryUpdateDto, @Param() id:IsMongoIdDto) {
     console.log()
-    return this.productService.getProductByCategory(id);
+    return this.productService.updateCategory(body, id.id);
   }
 
+  @Get('category/:id')
+  async getSubCategoryByCategoryId(@Param() id:IsMongoIdDto) {
+    return this.productService.getSubCategoryByCategoryId(id.id,1);
+  }
+
+  @Get('/:id')
+  async getProductByCategory(@Param() id :IsMongoIdDto) {
+    return this.productService.getProductByCategoryId(id.id);
+  }
 }
 
 
