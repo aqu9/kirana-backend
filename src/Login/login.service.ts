@@ -29,6 +29,7 @@ export class LoginService {
           isVerified: true,
           accessToken: accessToken,
           refreshToken: refreshToken,
+          user:user
       };
 
       
