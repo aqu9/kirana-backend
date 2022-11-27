@@ -219,7 +219,7 @@ export class ProductController {
       },
     },
   })
-  async getAlProduct(@Query() query) {
+  async getAllProduct(@Query() query) {
     return await this.productService.getAllProduct(query);
   }
 

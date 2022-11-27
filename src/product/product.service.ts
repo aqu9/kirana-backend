@@ -19,24 +19,101 @@ export class ProductService {
   }
  
   async getAllProduct(query) {
-    if(Object.keys(query).length===0)
-    return await this.productModel.find().limit(5)
+  //   if(Object.keys(query).length===0)
+  //   return await this.productModel.find().limit(5)
 
-    const queryParam =[];
+  //   const queryParam =[];
 
-   if(query.name){
-   queryParam.push({name:{"$regex":query.name,"$options":"i"}})
-   }
+  //  if(query.name){
+  //  queryParam.push({name:{"$regex":query.name,"$options":"i"}})
+  //  }
 
-    if(query.category){
-    	queryParam.push({category:{"$regex":query.category,"$options":"i"}})
+  //   if(query.category){
+  //   	queryParam.push({category:{"$regex":query.category,"$options":"i"}})
+  //   }
+
+  //   const product=await this.productModel.find({"$or": queryParam})
+  //   if(product.length===0){
+  //     throw new NotFoundException('Data Not Found');
+  //   }
+  //   return product;
+
+// =========================================================================================================================================================
+const pageSize = query.pageSize ? parseInt(query.pageSize) :2
+const search = query.search ? query.search : ""
+const page = query.page? parseInt(query.page) : 1
+const skip = pageSize * (page - 1)
+const dbQuery = [{
+  $lookup: {
+    from: "categories",
+    localField: "category",
+    foreignField: "_id",
+    as: "category"
+  }
+}, {
+  $unwind: {
+    path: "$category",
+    preserveNullAndEmptyArrays: true
+  }
+}, {
+  $lookup: {
+    from: "categories",
+    localField: "category.parentCategory",
+    foreignField: "_id",
+    as: "category.parentCategory",
+  }
+},
+  {
+    $match: {
+      $or:[
+        {name: { $regex: search,  $options: "i", }},
+        {"category.categoryName": { $regex: search,  $options: "i", }},
+        {"category.parentCategory.categoryName": { $regex: search,  $options: "i", }},
+
+      ]
+    },
+  },
+  {
+      $project: {
+        _id: 1,
+        name: 1,
+        rating: 1,
+        price: 1,
+        stock: 1,
+        logo_link: 1,
+        type_of_quantity: 1,
+        description: 1,
+        additional_field: 1,
+        is_visible: 1,
+        is_veg: 1,
+       "category.categoryName":1,
+       "category.parentCategory.categoryName":1
+      }
+}, { '$facet'    : {
+  metadata: [ { $count: "total" }, { $addFields: { page: page} } ],
+  data: [ { $skip: skip}, { $limit: pageSize } ] // add projection here wish you re-shape the docs
+} }
+]
+
+let product
+  await this.productModel.aggregate(dbQuery,(err, data)=>{
+    if(err){
+        throw new NotFoundException(err);
     }
+    product = data[0]
+    product.metadata = data[0].metadata[0]
+    product.metadata.noOfPage = Math.ceil(product.metadata.total / pageSize)
+  })
 
-    const product=await this.productModel.find({"$or": queryParam})
-    if(product.length===0){
-      throw new NotFoundException('Data Not Found');
-    }
-    return product;
+
+  return product
+
+
+
+
+//=============================================================================================================================
+
+
    }
 
    async addCategories(body:any) {
