@@ -20,7 +20,7 @@ export class Product {
   stock: number;
 
   @Prop()
-  logo_link: string;
+  imageLink: string;
 
   @Prop({enum:typeOfQuantity})
   type_of_quantity:string;

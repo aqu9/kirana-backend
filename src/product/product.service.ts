@@ -39,6 +39,7 @@ export class ProductService {
   //   return product;
 
 // =========================================================================================================================================================
+console.log("get call")
 const pageSize = query.pageSize ? parseInt(query.pageSize) :2
 const search = query.search ? query.search : ""
 const page = query.page? parseInt(query.page) : 1
@@ -86,6 +87,7 @@ const dbQuery = [{
         additional_field: 1,
         is_visible: 1,
         is_veg: 1,
+        imageLink:1,
        "category.categoryName":1,
        "category.parentCategory.categoryName":1
       }
@@ -96,17 +98,13 @@ const dbQuery = [{
 ]
 
 let product
-  await this.productModel.aggregate(dbQuery,(err, data)=>{
-    if(err){
-        throw new NotFoundException(err);
-    }
-    product = data[0]
-    product.metadata = data[0].metadata[0]
-    product.metadata.noOfPage = Math.ceil(product.metadata.total / pageSize)
-  })
-
-
+  const queryResult=await this.productModel.aggregate(dbQuery)
+  product = queryResult[0]
+  product.metadata = queryResult[0].metadata[0]
+  product.metadata.noOfPage = Math.ceil(product.metadata.total  / pageSize)
   return product
+
+
 
 
 
