@@ -23,7 +23,7 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(Strategy,"jwt-refr
 
 	async validate(req, payload: any) {
 		const { userId } = payload;
-
+		
 		let existingUser: User;
 
 		try {
@@ -39,6 +39,6 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(Strategy,"jwt-refr
 
 		if (!existingUser) throw new HttpException('No User exists with userId : ' + userId, HttpStatus.NOT_FOUND);
 
-		return existingUser;
+		return {...existingUser,userId: userId};
 	}
 }

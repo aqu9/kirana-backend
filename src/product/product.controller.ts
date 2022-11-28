@@ -224,7 +224,7 @@ export class ProductController {
   }
 
  
-
+  @UseGuards(AuthGuard('jwt'))
   @Get('category')
   async getProductCategory() {
     return this.productService.getAllParentCategory();
