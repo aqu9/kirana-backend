@@ -1,6 +1,6 @@
-import { Controller, Get,Post,Body,Query, UseGuards } from '@nestjs/common';
+import { Controller, Get,Post,Body,Query, UseGuards, Param ,Put} from '@nestjs/common';
 import { ProductService } from './product.service';
-import { ProductDto } from './dto';
+import { ProductDto,CategoryDto,CategoryUpdateDto, IsMongoIdDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
 import { categories, categoriesForFE } from 'database_Manager';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags,ApiBearerAuth,ApiQuery } from '@nestjs/swagger';
@@ -17,7 +17,7 @@ export class ProductController {
     return this.productService.getHello();
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  //@UseGuards(AuthGuard('jwt'))
   @Post('addproduct')
   @ApiOperation({ summary: 'create product api' })
   @ApiBearerAuth()
@@ -219,19 +219,44 @@ export class ProductController {
       },
     },
   })
-  async getAlProduct(@Query() query) {
+  async getAllProduct(@Query() query) {
     return await this.productService.getAllProduct(query);
   }
 
+ 
+  @UseGuards(AuthGuard('jwt'))
   @Get('category')
   async getProductCategory() {
-    return categoriesForFE;
+    return this.productService.getAllParentCategory();
+  }
+
+  @Get('category/all')
+  async getProductCategories() {
+    return this.productService.getAllCategories();
   }
 
   @Post('category')
-  async AddCategory(@Body() body:any) {
+  async AddCategory(@Body() body:CategoryDto) {
     console.log()
     return this.productService.addCategories(body);
   }
+
+  @Put('category/:id')
+  async UpdateCategory(@Body() body:CategoryUpdateDto, @Param() id:IsMongoIdDto) {
+    console.log()
+    return this.productService.updateCategory(body, id.id);
+  }
+
+  @Get('category/:id')
+  async getSubCategoryByCategoryId(@Param() id:IsMongoIdDto) {
+    return this.productService.getSubCategoryByCategoryId(id.id,1);
+  }
+
+  @Get('/:id')
+  async getProductByCategory(@Param() id :IsMongoIdDto) {
+    return this.productService.getProductByCategoryId(id.id);
+  }
 }
+
+
                             

@@ -29,6 +29,7 @@ export class LoginService {
           isVerified: true,
           accessToken: accessToken,
           refreshToken: refreshToken,
+          user:user
       };
 
       
@@ -40,10 +41,11 @@ async generateNewTokens(payload: any){
 
   const refreshToken = await this.generateToken(payload.userId, process.env.REFRESH_SECRET, '1d');
 
-
+console.log(payload._id,"======")
   return {
     accessToken: accessToken,
     refreshToken: refreshToken,
+    user:payload._doc
   };
 }
 

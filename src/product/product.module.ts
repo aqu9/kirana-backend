@@ -8,7 +8,7 @@ import { config } from 'dotenv';
 config();
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: 'product', schema: ProductSchema },{ name: 'category', schema: categorySchema }])],
+  imports: [MongooseModule.forFeature([{ name: 'product', schema: ProductSchema },{ name: 'Category', schema: categorySchema }])],
   controllers: [ProductController],
   providers: [ProductService],
 })

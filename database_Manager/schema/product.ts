@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document,Schema as mongoSchema } from 'mongoose';
 import { categories,typeOfQuantity } from 'database_Manager/category.config';
+import { Category } from './category';
 
 export type ProductDocument = Product & Document;
 
@@ -19,7 +20,7 @@ export class Product {
   stock: number;
 
   @Prop()
-  logo_link: string;
+  imageLink: string;
 
   @Prop({enum:typeOfQuantity})
   type_of_quantity:string;
@@ -40,8 +41,8 @@ export class Product {
   is_veg: boolean;
 
 
-  @Prop({ enum:categories})
-  category:  string;
+  @Prop({ type: mongoSchema.Types.ObjectId, ref: 'Category', required:true})
+  category: Category;
 
   @Prop()
   keywords: string[];
