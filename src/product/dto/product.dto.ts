@@ -8,7 +8,6 @@ export class ProductDto{
     @IsString()
     name: string;
 
-    @IsNotEmpty()
     @IsNumber()
     rating:number;
 
@@ -16,9 +15,8 @@ export class ProductDto{
     @IsNumber()
     price: number;
 
-    @IsNotEmpty()
     @IsNumber()
-    stock: string;
+    stock: number;
 
     @IsString()
     logo_link?: string;
@@ -34,7 +32,6 @@ export class ProductDto{
     @IsString()
     additional_field: string;
 
-    @IsNotEmpty()
     @IsBoolean()
     is_visible: boolean;
     
